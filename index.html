@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roumaissa GHLIB - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .project-card:hover .project-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .project-overlay {
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .active::after {
+            width: 100%;
+        }
+        
+        .hero-pattern {
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -0.5rem;
+            top: 0.25rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+        
+        .skill-badge {
+            transition: all 0.3s ease;
+        }
+        
+        .skill-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .tech-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            margin-right: 12px;
+        }
+
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .wave {
+            animation: wave 3s ease-in-out infinite;
+        }
+
+        /* Keyframes */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-30px);}
+            60% {transform: translateY(-15px);}
+        }
+
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+
+        .typing {
+            overflow: hidden;
+            border-right: .15em solid #3b82f6;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #3b82f6; }
+        }
+
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <!-- Header/Navigation -->
+    <header class="fixed w-full bg-white/80 backdrop-blur-sm z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold gradient-text hover:scale-105 transition-transform">R. GHLIB</a>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link active hover:scale-105 transition-transform">Home</a>
+                    <a href="#about" class="nav-link hover:scale-105 transition-transform">About</a>
+                    <a href="#experience" class="nav-link hover:scale-105 transition-transform">Experience</a>
+                    <a href="#projects" class="nav-link hover:scale-105 transition-transform">Projects</a>
+                    <a href="#skills" class="nav-link hover:scale-105 transition-transform">Skills</a>
+                    <a href="#education" class="nav-link hover:scale-105 transition-transform">Education</a>
+                    <a href="#contact" class="nav-link hover:scale-105 transition-transform">Contact</a>
+                </nav>
+                <button id="mobile-menu-button" class="md:hidden text-gray-800 hover:text-blue-600 transition-colors">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center hidden">
+        <button id="close-menu" class="absolute top-6 right-6 text-2xl text-gray-800 hover:text-blue-600">
+            <i class="fas fa-times"></i>
+        </button>
+        <nav class="flex flex-col space-y-8 text-center">
+            <a href="#home" class="text-2xl font-medium hover:text-blue-600 transition-colors mobile-nav-link">Home</a>
+            <a href="#about" class="text-2xl font-medium hover:text-blue-600 transition-colors mobile-nav-link">About</a>
+            <a href="#experience" class="text-2xl font-medium hover:text-blue-600 transition-colors mobile-nav-link">Experience</a>
+            <a href="#projects" class="text-2xl font-medium hover:text-blue-600 transition-colors mobile-nav-link">Projects</a>
+            <a href="#skills" class="text-2xl font-medium hover:text-blue-600 transition-colors mobile-nav-link">Skills</a>
+            <a href="#education" class="text-2xl font-medium hover:text-blue-600 transition-colors mobile-nav-link">Education</a>
+            <a href="#contact" class="text-2xl font-medium hover:text-blue-600 transition-colors mobile-nav-link">Contact</a>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-pattern min-h-screen flex items-center pt-20">
+        <div class="container mx-auto px-6 py-20">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0 fade-in">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                        Hi, I'm <span class="gradient-text">Roumaissa GHLIB</span>
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl font-semibold text-gray-600 mb-8 ">
+                        AI & Quantum Computing Researcher Intern | Full Stack Developer
+                    </h2>
+                  <!--  <h2 class="text-2xl md:text-3xl font-semibold text-gray-600 mb-8 typing">
+                          Full Stack Developer
+                    </h2>-->
+                    <p class="text-lg text-gray-600 mb-8 max-w-lg fade-in" style="transition-delay: 0.2s;">
+                        Fifth-year student at ESI specializing in Information Systems and Technologies, passionate about AI, intelligent systems, and quantum computing.
+                    </p>
+                    <div class="flex space-x-4 fade-in" style="transition-delay: 0.4s;">
+                        <a href="#projects" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-medium hover:shadow-lg transition-all hover:scale-105">
+                            View My Work
+                        </a>
+                        <a href="#contact" class="px-6 py-3 border border-gray-300 rounded-full font-medium hover:bg-gray-100 transition-all hover:scale-105">
+                            Contact Me
+                        </a>
+                    </div>
+                    <div class="mt-8 flex space-x-4 fade-in" style="transition-delay: 0.6s;">
+                        <a href="https://www.linkedin.com/in/ghlib-roumaissa-69796b248" target="_blank" class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-200 hover:scale-110 transition-transform">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/Roumy126" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 hover:scale-110 transition-transform">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center fade-in" style="transition-delay: 0.3s;">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 absolute -z-10 top-4 left-4 float"></div>
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80" 
+                             alt="Profile" 
+                             class="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 border-white shadow-xl hover:scale-105 transition-transform">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16 fade-in">
+                <span class="gradient-text">About Me</span>
+            </h2>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/3 mb-8 md:mb-0 flex justify-center fade-in" style="transition-delay: 0.2s;">
+                    <img src="/me.jpg" 
+                         alt="About" 
+                         class="w-64 h-64 rounded-full object-cover shadow-lg hover:scale-105 transition-transform">
+                </div>
+                <div class="md:w-2/3 md:pl-12 fade-in" style="transition-delay: 0.4s;">
+                    <h3 class="text-2xl font-semibold mb-6">Who am I?</h3>
+                    <p class="text-gray-600 mb-6">
+                        I'm a fifth-year student at the École Nationale Supérieure d'Informatique (ESI), specializing in Information Systems and Technologies. 
+                        My passion lies in artificial intelligence, intelligent systems, and quantum computing.
+                    </p>
+                    <p class="text-gray-600 mb-8">
+                        Currently interning at LIST3N laboratory (University of Technology of Troyes, France), I'm working on automatic design of optimized quantum circuits using evolutionary algorithms.
+                        I'm motivated by continuous learning and have developed strong programming and project management skills throughout my academic journey.
+                    </p>
+                    <div class="mb-8">
+                        <h4 class="text-xl font-semibold mb-4">Quick Facts</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-center hover:translate-x-2 transition-transform">
+                                <i class="fas fa-graduation-cap text-blue-500 mr-3 text-xl bounce"></i>
+                                <span>5th Year Computer Science Student at ESI</span>
+                            </div>
+                            <div class="flex items-center hover:translate-x-2 transition-transform">
+                                <i class="fas fa-flask text-purple-500 mr-3 text-xl bounce"></i>
+                                <span>Quantum Computing Researcher</span>
+                            </div>
+                            <div class="flex items-center hover:translate-x-2 transition-transform">
+                                <i class="fas fa-code text-green-500 mr-3 text-xl bounce"></i>
+                                <span>Full Stack Developer</span>
+                            </div>
+                            <div class="flex items-center hover:translate-x-2 transition-transform">
+                                <i class="fas fa-language text-yellow-500 mr-3 text-xl bounce"></i>
+                                <span>Multilingual (Arabic, French, English)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/CV_GHLIB_ROMAISSA_ENGLISH.pdf" class="inline-flex items-center text-blue-600 font-medium hover:scale-105 transition-transform">
+                        Download Resume <i class="fas fa-download ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16 fade-in">
+                <span class="gradient-text">Professional Experience</span>
+            </h2>
+            
+            <div class="max-w-3xl mx-auto">
+                <!-- Current Experience -->
+                <div class="timeline-item fade-in" style="transition-delay: 0.2s;">
+                    <div class="timeline-dot pulse"></div>
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">LIST3N, Université de Technologie de Troyes | France</h3>
+                            <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Current</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">Research Intern - Quantum Computing</h4>
+                        <span class="text-gray-500 text-sm">Sep 2025 - Present</span>
+                        <ul class="mt-4 list-disc list-inside text-gray-600 space-y-2">
+                            <li>Automatic design of optimized quantum circuits using evolutionary algorithms with IBM's Qiskit and Python</li>
+                            <li>Development and implementation of a multi-objective genetic algorithm for optimizing quantum circuits dedicated to Flow Shop scheduling problems</li>
+                            <li>Performance evaluation of generated circuits according to multiple metrics: fidelity, depth, number of quantum gates</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Backend Developer Experience -->
+                <div class="timeline-item fade-in" style="transition-delay: 0.4s;">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="text-xl font-bold mb-2">Academic Projects | ESI</h3>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">Backend Developer</h4>
+                        <span class="text-gray-500 text-sm">2022 - Present</span>
+                        <ul class="mt-4 list-disc list-inside text-gray-600 space-y=2">
+                            <li>Principal backend developer in academic projects using Django and REST API</li>
+                            <li>Integrated mapping functionality in real estate website and implemented secure user access management with MySQL database</li>
+                            <li>Gained valuable expertise in web data extraction</li>
+                            <li>Collaborated effectively with team members, strengthening system development, documentation, and teamwork skills</li>
+                        </ul>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm hover:scale-110 transition-transform">Django</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm hover:scale-110 transition-transform">REST API</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm hover:scale-110 transition-transform">MySQL</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm hover:scale-110 transition-transform">Web Scraping</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Previous Experience 1 -->
+                <div class="timeline-item fade-in" style="transition-delay: 0.6s;">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="text-xl font-bold mb-2">Entreprise Hamoud-Boualem | Algeria</h3>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">Full Stack Developer Intern</h4>
+                        <span class="text-gray-500 text-sm">Sep 2022 - Jun 2024</span>
+                        <ul class="mt-4 list-disc list-inside text-gray-600 space-y-2">
+                            <li>Developed a web application for training management, implementing a REST API with Django</li>
+                            <li>Gained in-depth knowledge of database modeling with technologies like PL/SQL</li>
+                            <li>Used technologies: Django, MySQL, Bootstrap, HTML, CSS, JavaScript</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Previous Experience 2 -->
+                <div class="timeline-item fade-in" style="transition-delay: 0.8s;">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="text-xl font-bold mb-2">Association Kafil El-Yatim | ESTIN</h3>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">Frontend Developer & Graphic Designer</h4>
+                        <span class="text-gray-500 text-sm">Feb 2022 - May 2022</span>
+                        <ul class="mt-4 list-disc list-inside text-gray-600 space-y-2">
+                            <li>Led a project to design a unique website to help children in need</li>
+                            <li>Used design tools: Figma and Adobe XD</li>
+                            <li>Implemented frontend with ReactJS, HTML, CSS and JavaScript</li>
+                            <li>Created a dynamic and responsive interface with React</li>
+                            <li>Collaborated with backend team to integrate frontend with REST APIs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-4 fade-in">
+                <span class="gradient-text">My Projects</span>
+            </h2>
+            <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto fade-in" style="transition-delay: 0.2s;">
+                Here are some of my recent projects showcasing my skills in quantum computing, AI, and full stack development.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Quantum Computing Project -->
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all fade-in" style="transition-delay: 0.2s;">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=765&q=80" 
+                             alt="Quantum Computing" 
+                             class="w-full h-64 object-cover hover:scale-105 transition-transform duration-500">
+                        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                            <div>
+                                <h3 class="text-white text-xl font-bold mb-2">Quantum Circuit Optimization</h3>
+                                <p class="text-gray-300">Python, Qiskit, Evolutionary Algorithms</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">
+                            Multi-objective genetic algorithm for optimizing quantum circuits dedicated to Flow Shop scheduling problems.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:scale-110 transition-transform">
+                                <i class="fas fa-file-alt"></i> Research Paper
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 hover:scale-110 transition-transform">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Heart Disease Detection -->
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all fade-in" style="transition-delay: 0.4s;">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                             alt="Heart Disease Detection" 
+                             class="w-full h-64 object-cover hover:scale-105 transition-transform duration-500">
+                        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                            <div>
+                                <h3 class="text-white text-xl font-bold mb-2">Heart Disease & Diabetes Detection</h3>
+                                <p class="text-gray-300">Machine Learning, Python</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">
+                            Developed detection models using Random Forest, XGBoost, logistic regression, and SVM. Performed data collection, preprocessing, and model evaluation.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:scale-110 transition-transform">Random Forest</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:scale-110 transition-transform">XGBoost</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:scale-110 transition-transform">SVM</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:scale-110 transition-transform">Pandas</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:scale-110 transition-transform">
+                                <i class="fas fa-file-alt"></i> Report
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 hover:scale-110 transition-transform">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Movie Recommendation System -->
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all fade-in" style="transition-delay: 0.6s;">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                             alt="Movie Recommendation" 
+                             class="w-full h-64 object-cover hover:scale-105 transition-transform duration-500">
+                        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                            <div>
+                                <h3 class="text-white text-xl font-bold mb-2">Movie Recommendation System</h3>
+                                <p class="text-gray-300">Python, Scikit-learn</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">
+                            A basic movie recommendation system that suggests films based on user preferences or viewing history using collaborative filtering techniques.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:scale-110 transition-transform">Python</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:scale-110 transition-transform">Pandas</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:scale-110 transition-transform">Scikit-learn</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:scale-110 transition-transform">Numpy</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:scale-110 transition-transform">
+                                <i class="fas fa-external-link-alt"></i> Demo
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 hover:scale-110 transition-transform">
+                                <i class="fab fa-github"></i> Source
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Training Management System -->
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all fade-in" style="transition-delay: 0.2s;">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                             alt="Training Management" 
+                             class="w-full h-64 object-cover hover:scale-105 transition-transform duration-500">
+                        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                            <div>
+                                <h3 class="text-white text-xl font-bold mb-2">Training Management System</h3>
+                                <p class="text-gray-300">Django, MySQL, Bootstrap</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">
+                            Web application for training management with REST API, user roles, and reporting features.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:scale-110 transition-transform">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 hover:scale-110 transition-transform">
+                                <i class="fab fa-github"></i> Source Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charity Platform -->
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all fade-in" style="transition-delay: 0.4s;">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1636&q=80" 
+                             alt="Charity Platform" 
+                             class="w-full h-64 object-cover hover:scale-105 transition-transform duration-500">
+                        <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                            <div>
+                                <h3 class="text-white text-xl font-bold mb-2">Kafil El-Yatim Platform</h3>
+                                <p class="text-gray-300">React, Figma, Adobe XD</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">
+                            Charity platform for helping children in need with donation tracking and volunteer management.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:scale-110 transition-transform">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 hover:scale-110 transition-transform">
+                                <i class="fab fa-github"></i> Source Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 fade-in" style="transition-delay: 0.6s;">
+                <a href="#" class="px-6 py-3 border border-gray-300 rounded-full font-medium hover:bg-gray-100 transition-all hover:scale-105 inline-flex items-center">
+                    View All Projects <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16 fade-in">
+                <span class="gradient-text">Skills & Expertise</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Programming Languages -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow fade-in" style="transition-delay: 0.2s;">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-code text-blue-500 mr-3 text-xl wave"></i>
+                        <h3 class="text-xl font-bold">Programming Languages</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge px-3 py-1 bg-blue-100 text-blue-800 rounded-full hover:scale-110">Python</span>
+                        <span class="skill-badge px-3 py-1 bg-blue-100 text-blue-800 rounded-full hover:scale-110">Java</span>
+                        <span class="skill-badge px-3 py-1 bg-blue-100 text-blue-800 rounded-full hover:scale-110">C</span>
+                        <span class="skill-badge px-3 py-1 bg-blue-100 text-blue-800 rounded-full hover:scale-110">Assembleur</span>
+                        <span class="skill-badge px-3 py-1 bg-blue-100 text-blue-800 rounded-full hover:scale-110">XML</span>
+                    </div>
+                </div>
+                
+                <!-- Web & Frontend -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow fade-in" style="transition-delay: 0.4s;">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-globe text-purple-500 mr-3 text-xl wave"></i>
+                        <h3 class="text-xl font-bold">Web & Frontend</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge px-3 py-1 bg-purple-100 text-purple-800 rounded-full hover:scale-110">HTML</span>
+                        <span class="skill-badge px-3 py-1 bg-purple-100 text-purple-800 rounded-full hover:scale-110">CSS</span>
+                        <span class="skill-badge px-3 py-1 bg-purple-100 text-purple-800 rounded-full hover:scale-110">JavaScript</span>
+                        <span class="skill-badge px-3 py-1 bg-purple-100 text-purple-800 rounded-full hover:scale-110">React</span>
+                    </div>
+                </div>
+                
+                <!-- Frameworks & Tools -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow fade-in" style="transition-delay: 0.6s;">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-cogs text-green-500 mr-3 text-xl wave"></i>
+                        <h3 class="text-xl font-bold">Frameworks & Tools</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge px-3 py-1 bg-green-100 text-green-800 rounded-full hover:scale-110">Django</span>
+                        <span class="skill-badge px-3 py-1 bg-green-100 text-green-800 rounded-full hover:scale-110">Node.js</span>
+                        <span class="skill-badge px-3 py-1 bg-green-100 text-green-800 rounded-full hover:scale-110">Qiskit</span>
+                        <span class="skill-badge px-3 py-1 bg-green-100 text-green-800 rounded-full hover:scale-110">Odoo</span>
+                    </div>
+                </div>
+                
+                <!-- Databases -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow fade-in" style="transition-delay: 0.8s;">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-database text-yellow-500 mr-3 text-xl wave"></i>
+                        <h3 class="text-xl font-bold">Databases</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full hover:scale-110">MySQL</span>
+                        <span class="skill-badge px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full hover:scale-110">PostgreSQL</span>
+                        <span class="skill-badge px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full hover:scale-110">Oracle</span>
+                        <span class="skill-badge px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full hover:scale-110">PL/SQL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16 fade-in">
+                <span class="gradient-text">Education</span>
+            </h2>
+            
+            <div class="max-w-3xl mx-auto">
+                <!-- Current Education -->
+                <div class="timeline-item fade-in" style="transition-delay: 0.2s;">
+                    <div class="timeline-dot pulse"></div>
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">École Nationale Supérieure d'Informatique (ESI)</h3>
+                            <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Current</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">Engineering Degree in Information Systems and Technologies</h4>
+                        <span class="text-gray-500 text-sm">2020 - 2025</span>
+                        <p class="mt-4 text-gray-600">
+                            Specializing in artificial intelligence, intelligent systems, and quantum computing. Strong focus on software engineering, database management, and web development.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Previous Education -->
+                <div class="timeline-item fade-in" style="transition-delay: 0.4s;">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="text-xl font-bold mb-2">University of Science and Technology Houari Boumediene (USTHB)</h3>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">Preparatory Classes for Engineering Schools</h4>
+                        <span class="text-gray-500 text-sm">2018 - 2020</span>
+                        <p class="mt-4 text-gray-600">
+                            Intensive two-year program in mathematics, physics, and computer science preparing for competitive entrance exams to engineering schools.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16 fade-in">
+                <span class="gradient-text">Get In Touch</span>
+            </h2>
+            
+            <div class="flex flex-col md:flex-row gap-12">
+                <div class="md:w-1/2 fade-in" style="transition-delay: 0.2s;">
+                    <h3 class="text-2xl font-semibold mb-6">Contact Information</h3>
+                    <p class="text-gray-600 mb-8">
+                        Feel free to reach out to me for collaborations, job opportunities, or just to say hello!
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="tech-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Email</h4>
+                                <a href="mailto:roumaissa.ghlib@example.com" class="text-blue-600 hover:text-blue-800">roumaissa.ghlib@example.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="tech-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Phone</h4>
+                                <a href="tel:+213123456789" class="text-blue-600 hover:text-blue-800">+213 123 456 789</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="tech-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Location</h4>
+                                <p class="text-gray-600">Algiers, Algeria</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex space-x-4">
+                        <a href="https://www.linkedin.com/in/ghlib-roumaissa-69796b248" target="_blank" class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-200 hover:scale-110 transition-transform">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/Roumy126" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 hover:scale-110 transition-transform">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 fade-in" style="transition-delay: 0.4s;">
+                    <h3 class="text-2xl font-semibold mb-6">Send Me a Message</h3>
+                    <form action="https://formspree.io/f/mqaqwpne" method="POST"class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                            <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-medium hover:shadow-lg transition-all hover:scale-105">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-600 mb-4 md:mb-0">
+                    &copy; 2023 Roumaissa GHLIB. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-red-600 transition-colors">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for all links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Close mobile menu if open
+                document.getElementById('mobile-menu').classList.add('hidden');
+                
+                // Scroll to target section
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update active state for navigation links
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    
+                    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Update active navigation link based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (window.scrollY >= (sectionTop - 300)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+            
+            mobileLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.remove('hidden');
+        });
+
+        document.getElementById('close-menu').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Animate elements when they come into view
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.fade-in');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.classList.add('active');
+                }
+            });
+        };
+
+        // Run once on page load
+        animateOnScroll();
+
+        // Run on scroll
+        window.addEventListener('scroll', animateOnScroll);
+
+
+
+         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        let current = '';
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (window.scrollY >= (sectionTop - 300)) current = section.getAttribute('id');
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
+        });
+    });
+    </script>
+</body>
+</html>
